@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.5, maximum-scale=1">
+
+    <meta name="description" content="Trigonometric polynomial">
+    <meta name=" keywords" content="complex, trigonometric polynomial">
+
+    <title>TrigonoPoly</title>
+
+    <!--link rel="icon" type="image/svg" href="imgs/icons/person_raised_hand.svg"-->
+    <link rel="stylesheet" href="css/clear-days.css">
+    <link rel="stylesheet" href="css/fonts/noto.css">
+    <link rel="stylesheet" href="css/icons/material-icons.css">
+
+    <!-- MathJax -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        MathJax = {
+            loader: { load: ['[tex]/mathtools', '[tex]/newcommand'] },
+            tex: {
+                packages: { '[+]': ['mathtools', 'newcommand'] },
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                tags: 'ams',
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="page-container" class="page-container hidden transparent sans-serif-font">
+        <div id="plot-and-sliders-container">
+            <div id="trigonopoly-plot-container" class="plot-container">
+                <!-- Plot -->
+                <div id="trigonopoly-plot" class="plot">
+                    <!-- Axis canvas -->
+                    <canvas id="trigonopoly-canvas" name="plot" class="plot main">
+                    </canvas>
+                    <!-- Epicycles canvas -->
+                    <canvas id="epicycles-trigonopoly-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Path canvas -->
+                    <canvas id="path-trigonopoly-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Points canvas -->
+                    <canvas id="points-trigonopoly-canvas" name="plot" class="plot stacked">
+                    </canvas>
+                    <!-- Zoom out button -->
+                    <button id="trigonopoly-plot-zoom-out" class="plot-control round-button zoom-in">
+                        <span class="material-symbols-rounded bold-button">
+                            remove
+                        </span>
+                    </button>
+                    <!-- Zoom in button -->
+                    <button id="trigonopoly-plot-zoom-in" class="plot-control round-button zoom-out">
+                        <span class="material-symbols-rounded bold-button">
+                            add
+                        </span>
+                    </button>
+                    <!-- Plot refresh button -->
+                    <button id="trigonopoly-plot-refresh" class="plot-control round-button plot-refresh">
+                        <span class="material-symbols-rounded">
+                            refresh
+                        </span>
+                    </button>
+                    <!-- Toggle grid button -->
+                    <button id="trigonopoly-plot-toggle-grid" class="plot-control round-button toggle-grid">
+                        <span class="material-symbols-rounded grid-icon">
+                            grid_4x4
+                        </span>
+                    </button>
+                    <!-- Toggle epicycles -->
+                    <button id="trigonopoly-plot-toggle-epicycles" class="plot-control round-button toggle-epicycles">
+                        <span class="material-symbols-rounded grid-icon">
+                            architecture
+                        </span>
+                    </button>
+                    <!-- Toggle full screen button -->
+                    <button id="trigonopoly-plot-toggle-fullscreen" class="plot-control round-button fullscreen">
+                        <span id="trigonopoly-plot-toggle-fullscreen-icon" class="material-symbols-rounded">
+                            fullscreen
+                        </span>
+                    </button>
+                    <!-- Plot loader -->
+                    <div id="trigonopoly-loader" name="plot-loader" class="plot loader"></div>
+                </div>
+            </div>
+
+            <div id="trigonopoly-plot-sliders-container" class="sliders-container centered">
+                <!-- Sliders panel, it puts the slider in column -->
+                <div id="trigonopoly-plot-sliders-panel"
+                    class="vertical-options-panel-group plot-sliders-panel midsize">
+                    <!-- Group comprised of play/pause button and param value -->
+                    <div class="plot-slider-controls-group">
+                        <!-- Play/pause button -->
+                        <button id="play-button" class="round-button glass-grey slider-control ">
+                            <span id="play-icon" class="material-symbols-rounded">
+                                pause
+                            </span>
+                        </button>
+                        <!-- Previous button -->
+                        <button id="previous-button" class="round-button glass-grey slider-control ">
+                            <span id="previous-icon" class="material-symbols-rounded">
+                                skip_previous
+                            </span>
+                        </button>
+                        <!-- Next button -->
+                        <button id="next-button" class="round-button glass-grey slider-control ">
+                            <span id="next-icon" class="material-symbols-rounded">
+                                skip_next
+                            </span>
+                        </button>
+                    </div>
+                    <!-- Sliders panel group for param "c_{-3}" -->
+                    <div id="trigonopoly-param-c_{-3}-group" class="plot-slider-group">
+                        <!-- Group comprised of the param value and the actual slider -->
+                        <div class="plot-slider-controls-group">
+                            <!-- Param value -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-3}-value" class="plot-slider-value">-3</span>
+                            </div>
+                            <!-- Actual slider -->
+                            <input id="trigonopoly-param-c_{-3}" class="plot-slider" type="range" min="0" max="5"
+                                value="0" step="0.01">
+                        </div>
+                    </div>
+                    <!-- Sliders panel group for param "c_{-2}" -->
+                    <div id="trigonopoly-param-c_{-2}-group" class="plot-slider-group">
+                        <!-- Group comprised of the param value and the actual slider -->
+                        <div class="plot-slider-controls-group">
+                            <!-- Param value -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-2}-value" class="plot-slider-value">-2</span>
+                            </div>
+                            <!-- Actual slider -->
+                            <input id="trigonopoly-param-c_{-2}" class="plot-slider" type="range" min="0" max="5"
+                                value="0" step="0.01">
+                        </div>
+                    </div>
+                    <!-- Sliders panel group for param "c_{-1}" -->
+                    <div id="trigonopoly-param-c_{-1}-group" class="plot-slider-group">
+                        <!-- Group comprised of the param value and the actual slider -->
+                        <div class="plot-slider-controls-group">
+                            <!-- Param value -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-1}-value" class="plot-slider-value">-1</span>
+                            </div>
+                            <!-- Actual slider -->
+                            <input id="trigonopoly-param-c_{-1}" class="plot-slider" type="range" min="0" max="5"
+                                value="1" step="0.01">
+                        </div>
+                    </div>
+                    <!-- Sliders panel group for param "c_{+1}" -->
+                    <div id="trigonopoly-param-c_{+1}-group" class="plot-slider-group">
+                        <!-- Group comprised of the param value and the actual slider -->
+                        <div class="plot-slider-controls-group">
+                            <!-- Param value -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+1}-value" class="plot-slider-value">+1</span>
+                            </div>
+                            <!-- Actual slider -->
+                            <input id="trigonopoly-param-c_{+1}" class="plot-slider" type="range" min="0" max="5"
+                                value="1" step="0.01">
+                        </div>
+                    </div>
+                    <!-- Sliders panel group for param "c_{+2}" -->
+                    <div id="trigonopoly-param-c_{+2}-group" class="plot-slider-group">
+                        <!-- Group comprised of the param value and the actual slider -->
+                        <div class="plot-slider-controls-group">
+                            <!-- Param value -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+2}-value" class="plot-slider-value">+2</span>
+                            </div>
+                            <!-- Actual slider -->
+                            <input id="trigonopoly-param-c_{+2}" class="plot-slider" type="range" min="0" max="5"
+                                value="1" step="0.01">
+                        </div>
+                    </div>
+                    <!-- Sliders panel group for param "c_{+3}" -->
+                    <div id="trigonopoly-param-c_{+3}-group" class="plot-slider-group">
+                        <!-- Group comprised of the param value and the actual slider -->
+                        <div class="plot-slider-controls-group">
+                            <!-- Param value -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+3}-value" class="plot-slider-value">+3</span>
+                            </div>
+                            <!-- Actual slider -->
+                            <input id="trigonopoly-param-c_{+3}" class="plot-slider" type="range" min="0" max="5"
+                                value="0" step="0.01">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fullscreen-container" class="fullscreen-container"></div>
+    <div id="fullscreen-sliders-container" class="fullscreen-container"></div>
+
+    <!-- Spinning loader -->
+
+    <div id="loading-container" class="loading-container">
+        <div class="general loader"></div>
+    </div>
+
+    <!-- JS files -->
+
+    <script src="js/src/util/utils.js"></script>
+    <script src="js/src/page-controller.js"></script>
+    <script src="js/src/util/coordinate-system.js"></script>
+    <script src="js/src/plots/plot-structure.js"></script>
+    <script src="js/src/plots/trigonopoly-plot.js"></script>
+    <script src="js/src/plots/plots-manager.js"></script>
+</body>
