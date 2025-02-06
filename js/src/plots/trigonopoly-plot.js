@@ -224,7 +224,7 @@ let trigonopolyPlot = function (id, options) {
             coefficients[i] = {
                 freq: p.freq,
                 amp: parseFloat(document.getElementById(id + "-param-" + p.id).value),
-                phase: 0
+                phase: parseFloat(document.getElementById(id + "-param-" + p.id + "-phase").value)
             };
         });
 
@@ -406,22 +406,20 @@ let trigonopolyPlot = function (id, options) {
                     // If the number of pointers down is less than two then reset diff tracker
                     if (eventsCache.length < 2) {
                         prevDiff = -1;
-
-                        setTimeout(() => {
-                            isZooming = false;
-                        }, 500);
+                        // Not zooming anymore
+                        isZooming = false;
+                        // Stores the remaining touch position
+                        touchPosition = { x: eventsCache[0].clientX * dpi, y: eventsCache[0].clientY * dpi };
                     }
                 }
             }
 
             // Executes when the mouse is moved on the whole document
             document.getElementById(id + "-plot").ontouchmove = (e) => {
-                if (!isZooming) {
-                    // Stores the current touch position
-                    const newTouchPosition = getTouchPosition(e);
-                    // Translates the axis
-                    translateAxis(newTouchPosition);
-                }
+                // Stores the current touch position
+                const newTouchPosition = getTouchPosition(e);
+                // Translates the axis
+                translateAxis(newTouchPosition);
             }
 
             // Executes when the mouse pointer moves
@@ -459,15 +457,17 @@ let trigonopolyPlot = function (id, options) {
              * @param {Object} newTouchPosition The latest touch/mouse position (x, y);
              */
             function translateAxis(newTouchPosition) {
-                // Translates the origin
-                cs.translateOrigin(
-                    newTouchPosition.x - touchPosition.x,
-                    newTouchPosition.y - touchPosition.y
-                );
-                // Updates the touch position
-                touchPosition = newTouchPosition;
-                // Draws the updated plot
-                publicAPIs.drawPlot();
+                if (!isZooming) {
+                    // Translates the origin
+                    cs.translateOrigin(
+                        newTouchPosition.x - touchPosition.x,
+                        newTouchPosition.y - touchPosition.y
+                    );
+                    // Updates the touch position
+                    touchPosition = newTouchPosition;
+                    // Draws the updated plot
+                    publicAPIs.drawPlot();
+                }
             }
         }
 
@@ -721,43 +721,60 @@ let trigonopolyPlot = function (id, options) {
         // If some parameter is used
         if (options.parameters.length > 0) {
             options.parameters.forEach((p, i) => {
-                // Executes when the input changes
+                // Executes when the radius input changes
                 document.getElementById(id + "-param-" + p.id).oninput = () => {
                     // Stores the value
                     coefficients[i].amp = parseFloat(document.getElementById(id + "-param-" + p.id).value);
 
+                    // Updates the slider value
+                    updateSliderValue(p.id, i);
+
                     // Compute absolute values of series vectors
                     computePath();
 
-                    // Clears the vectors and points and redraws them
-                    clearEpicycles();
-                    clearPath();
-                    clearPoints();
-                    drawEpicycles();
-                    drawPath();
-                    drawPoints();
+                    // Clears everything and redraws the scene
+                    redrawScene();
+                }
+
+                // Executes when the phase input changes
+                document.getElementById(id + "-param-" + p.id + "-phase").oninput = () => {
+                    // Stores the value
+                    coefficients[i].phase = parseFloat(document.getElementById(id + "-param-" + p.id + "-phase").value);
+
+                    // Updates the slider value
+                    updateSliderValue(p.id + "-phase", i, true);
+
+                    // Compute absolute values of series vectors
+                    computePath();
+
+                    // Clears everything and redraws the scene
+                    redrawScene();
                 }
             });
         }
     }
 
-    // /**
-    //  * Updates the value of the parameter in the corresponding slider value span.
-    //  * @param {String} paramId Id of the parameter.
-    //  */
-    // function updateSliderValue(paramId) {
-    //     // Gets the span with the slider value
-    //     const sliderValueSpan = document.getElementById(id + "-param-" + paramId + "-value");
-    //     // MathJax will forget about the math inside said span
-    //     MathJax.typesetClear([sliderValueSpan]);
-    //     // The inner text of the span is edited
-    //     sliderValueSpan.innerText =
-    //         "$" + paramId + "=" + roundNumberDigit(params[paramId], 2) + "$";
-    //     // MathJax does its things and re-renders the formula
-    //     MathJax.typesetPromise([sliderValueSpan]).then(() => {
-    //         // the new content is has been typeset
-    //     });
-    // }
+    /**
+     * Updates the value of the parameter in the corresponding slider value span.
+     * @param {String} paramId Id of the parameter.
+     * @param {Number} coefficientIndex Index of the coefficient that has changed.
+     * @param {Boolean} isPhase True if phase is being edited, false otherwise (false by default).
+     */
+    function updateSliderValue(paramId, coefficientIndex, isPhase = false) {
+        // Gets the span with the slider value
+        const sliderValueSpan = document.getElementById(id + "-param-" + paramId + "-value");
+        // MathJax will forget about the math inside said span
+        MathJax.typesetClear([sliderValueSpan]);
+        // The inner text of the spans is edited
+        sliderValueSpan.innerText =
+            "$" + roundNumberDigit(
+                isPhase ? coefficients[coefficientIndex].phase : coefficients[coefficientIndex].amp, 1
+            ) + "$";
+        // MathJax does its things and re-renders the formula
+        MathJax.typesetPromise([sliderValueSpan]).then(() => {
+            // the new content has been typeset
+        });
+    }
 
     /* -- Utils -- */
 
@@ -805,13 +822,8 @@ let trigonopolyPlot = function (id, options) {
 
         time = (time + dt) % (2 * Math.PI);
 
-        // Clears and redraws the vectors and points
-        clearEpicycles();
-        clearPath();
-        clearPoints();
-        drawEpicycles();
-        drawPath();
-        drawPoints();
+        // Clears everything and redraws the scene
+        redrawScene();
 
         // Keeps executing this function
         requestAnimationFrame(() => { animateEpicycles(); });
@@ -1309,6 +1321,18 @@ let trigonopolyPlot = function (id, options) {
      */
     function clearPoints() {
         pCtx.clearRect(0, 0, width + 1, height + 1);
+    }
+
+    /**
+     * Clears everything and redraws the scene
+     */
+    function redrawScene() {
+        clearEpicycles();
+        clearPath();
+        clearPoints();
+        drawEpicycles();
+        drawPath();
+        drawPoints();
     }
 
     /**

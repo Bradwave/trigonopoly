@@ -84,8 +84,6 @@
                             fullscreen
                         </span>
                     </button>
-                    <!-- Plot loader -->
-                    <div id="trigonopoly-loader" name="plot-loader" class="plot loader"></div>
                 </div>
             </div>
 
@@ -114,82 +112,144 @@
                             </span>
                         </button>
                     </div>
+                    <!--div class="small-separator"></div>
+                    <div class="plot-slider-group">
+                        <div class="plot-slider-controls-group">
+                            <span class="freq-label">$n$</span>
+                            <span class="slider-label">$r_n$</span>
+                            <span class="slider-label">$\theta_n$</span>
+                        </div>
+                    </div-->
                     <!-- Sliders panel group for param "c_{-3}" -->
                     <div id="trigonopoly-param-c_{-3}-group" class="plot-slider-group">
                         <!-- Group comprised of the param value and the actual slider -->
                         <div class="plot-slider-controls-group">
-                            <!-- Param value -->
-                            <div class="plot-slider-value-container">
-                                <span id="trigonopoly-param-c_{-3}-value" class="plot-slider-value">-3</span>
+                            <!-- Frequency label -->
+                            <div class="plot-slider-freq-label">
+                                <span id="trigonopoly-param-c_{-3}-freq-label" class="plot-slider-value">-3</span>
                             </div>
-                            <!-- Actual slider -->
+                            <!-- Radius slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-3}-value" class="plot-slider-value">$0$</span>
+                            </div>
                             <input id="trigonopoly-param-c_{-3}" class="plot-slider" type="range" min="0" max="5"
                                 value="0" step="0.01">
+                            <!-- Phase slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-3}-phase-value" class="plot-slider-value">$0$</span>
+                            </div>
+                            <input id="trigonopoly-param-c_{-3}-phase" class="plot-slider" type="range" min="0"
+                                max="6.28" value="0" step="0.01">
                         </div>
                     </div>
                     <!-- Sliders panel group for param "c_{-2}" -->
                     <div id="trigonopoly-param-c_{-2}-group" class="plot-slider-group">
                         <!-- Group comprised of the param value and the actual slider -->
                         <div class="plot-slider-controls-group">
-                            <!-- Param value -->
-                            <div class="plot-slider-value-container">
-                                <span id="trigonopoly-param-c_{-2}-value" class="plot-slider-value">-2</span>
+                            <!-- Frequency label -->
+                            <div class="plot-slider-freq-label">
+                                <span id="trigonopoly-param-c_{-2}-freq-label" class="plot-slider-value">-2</span>
                             </div>
-                            <!-- Actual slider -->
+                            <!-- Radius slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-2}-value" class="plot-slider-value">$0$</span>
+                            </div>
                             <input id="trigonopoly-param-c_{-2}" class="plot-slider" type="range" min="0" max="5"
                                 value="0" step="0.01">
+                            <!-- Phase slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-2}-phase-value" class="plot-slider-value">$0$</span>
+                            </div>
+                            <input id="trigonopoly-param-c_{-2}-phase" class="plot-slider" type="range" min="0"
+                                max="6.28" value="0" step="0.01">
                         </div>
                     </div>
                     <!-- Sliders panel group for param "c_{-1}" -->
                     <div id="trigonopoly-param-c_{-1}-group" class="plot-slider-group">
                         <!-- Group comprised of the param value and the actual slider -->
                         <div class="plot-slider-controls-group">
-                            <!-- Param value -->
-                            <div class="plot-slider-value-container">
-                                <span id="trigonopoly-param-c_{-1}-value" class="plot-slider-value">-1</span>
+                            <!-- Frequency label -->
+                            <div class="plot-slider-freq-label">
+                                <span id="trigonopoly-param-c_{-1}-freq-label" class="plot-slider-value">-1</span>
                             </div>
                             <!-- Actual slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-1}-value" class="plot-slider-value">$1$</span>
+                            </div>
                             <input id="trigonopoly-param-c_{-1}" class="plot-slider" type="range" min="0" max="5"
                                 value="1" step="0.01">
+                            <!-- Phase slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{-1}-phase-value" class="plot-slider-value">$0$</span>
+                            </div>
+                            <input id="trigonopoly-param-c_{-1}-phase" class="plot-slider" type="range" min="0"
+                                max="6.28" value="0" step="0.01">
                         </div>
                     </div>
                     <!-- Sliders panel group for param "c_{+1}" -->
                     <div id="trigonopoly-param-c_{+1}-group" class="plot-slider-group">
                         <!-- Group comprised of the param value and the actual slider -->
                         <div class="plot-slider-controls-group">
-                            <!-- Param value -->
-                            <div class="plot-slider-value-container">
-                                <span id="trigonopoly-param-c_{+1}-value" class="plot-slider-value">+1</span>
+                            <!-- Frequency label -->
+                            <div class="plot-slider-freq-label">
+                                <span id="trigonopoly-param-c_{+1}-freq-label" class="plot-slider-value">+1</span>
                             </div>
                             <!-- Actual slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+1}-value" class="plot-slider-value">$1$</span>
+                            </div>
                             <input id="trigonopoly-param-c_{+1}" class="plot-slider" type="range" min="0" max="5"
                                 value="1" step="0.01">
+                            <!-- Phase slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+1}-phase-value" class="plot-slider-value">$0$</span>
+                            </div>
+                            <input id="trigonopoly-param-c_{+1}-phase" class="plot-slider" type="range" min="0"
+                                max="6.28" value="0" step="0.01">
                         </div>
                     </div>
                     <!-- Sliders panel group for param "c_{+2}" -->
                     <div id="trigonopoly-param-c_{+2}-group" class="plot-slider-group">
                         <!-- Group comprised of the param value and the actual slider -->
                         <div class="plot-slider-controls-group">
-                            <!-- Param value -->
-                            <div class="plot-slider-value-container">
-                                <span id="trigonopoly-param-c_{+2}-value" class="plot-slider-value">+2</span>
+                            <!-- Frequency label -->
+                            <div class="plot-slider-freq-label">
+                                <span id="trigonopoly-param-c_{+2}-freq-label" class="plot-slider-value">+2</span>
                             </div>
                             <!-- Actual slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+2}-value" class="plot-slider-value">$1$</span>
+                            </div>
                             <input id="trigonopoly-param-c_{+2}" class="plot-slider" type="range" min="0" max="5"
                                 value="1" step="0.01">
+                            <!-- Phase slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+2}-phase-value" class="plot-slider-value">$0$</span>
+                            </div>
+                            <input id="trigonopoly-param-c_{+2}-phase" class="plot-slider" type="range" min="0"
+                                max="6.28" value="0" step="0.01">
                         </div>
                     </div>
                     <!-- Sliders panel group for param "c_{+3}" -->
                     <div id="trigonopoly-param-c_{+3}-group" class="plot-slider-group">
                         <!-- Group comprised of the param value and the actual slider -->
                         <div class="plot-slider-controls-group">
-                            <!-- Param value -->
-                            <div class="plot-slider-value-container">
-                                <span id="trigonopoly-param-c_{+3}-value" class="plot-slider-value">+3</span>
+                            <!-- Frequency label -->
+                            <div class="plot-slider-freq-label">
+                                <span id="trigonopoly-param-c_{+3}-freq-label" class="plot-slider-value">+3</span>
                             </div>
                             <!-- Actual slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+3}-value" class="plot-slider-value">$0$</span>
+                            </div>
                             <input id="trigonopoly-param-c_{+3}" class="plot-slider" type="range" min="0" max="5"
                                 value="0" step="0.01">
+                            <!-- Phase slider -->
+                            <div class="plot-slider-value-container">
+                                <span id="trigonopoly-param-c_{+3}-phase-value" class="plot-slider-value">$0$</span>
+                            </div>
+                            <input id="trigonopoly-param-c_{+3}-phase" class="plot-slider" type="range" min="0"
+                                max="6.28" value="0" step="0.01">
                         </div>
                     </div>
                 </div>
