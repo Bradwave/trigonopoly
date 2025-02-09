@@ -344,7 +344,7 @@ let trigonopolyPlot = function (id, options) {
 
             clearInterval(skipInterval)
             skipInterval = setInterval(function () {
-                skipNext();
+                skipPrev();
             }, 50);
         }
 
@@ -397,6 +397,7 @@ let trigonopolyPlot = function (id, options) {
                 if (e.pointerType == 'mouse' && e.button === 0) {
                     isLeftMouseDown = false;
                 } else if (e.pointerType == 'touch') {
+                    console.log(eventsCache.length)
                     // Remove this pointer from the cache and reset the target's
                     const index = eventsCache.findIndex(
                         (cachedEvent) => cachedEvent.pointerId === e.pointerId,
@@ -404,7 +405,7 @@ let trigonopolyPlot = function (id, options) {
                     eventsCache.splice(index, 1);
 
                     // If the number of pointers down is less than two then reset diff tracker
-                    if (eventsCache.length < 2) {
+                    if (isZooming && eventsCache.length < 2) {
                         prevDiff = -1;
                         // Not zooming anymore
                         isZooming = false;
@@ -1339,10 +1340,10 @@ let trigonopolyPlot = function (id, options) {
      * Checks if a point is inside the canvas.
      * @param {Number} pX Coordinate x of the point.
      * @param {Number} pY Coordinate y of the point.
-     * @param {Number} tolerance Tolerance.
+     * @param {Number} tolerance Tolerance (zero by default).
      * @returns True if the point is inside the canvas, false otherwise.
      */
-    const isInbound = (pX, pY, tolerance) => {
+    const isInbound = (pX, pY, tolerance = 0) => {
         const isXInbound = (pX < cs.screenXMax + tolerance) && (pX > cs.screenXMin - tolerance);
         const isYInbound = (pY < cs.screenYMax + tolerance) && (pY > cs.screenYMin - tolerance)
         return isXInbound && isYInbound;
